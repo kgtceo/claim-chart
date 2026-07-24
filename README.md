@@ -47,6 +47,24 @@ claim-chart chart --claim "A method comprising: A; and B." --reference "The prio
 claim-chart chart --claim-file claim.txt --reference-file ref.txt
 ```
 
+Sample output (`claim-chart demo`) — each limitation mapped to a verbatim quote, then a verdict:
+
+```
+╭─────────────────── Claim chart ───────────────────╮
+│ ANTICIPATED — 3/3 limitations disclosed            │
+╰────────────────────────────────────────────────────╯
+ #  Limitation                      Disclosed    Quote from reference
+ 1  measuring an ambient            ✓ disclosed  "uses a thermistor to measure
+    temperature with a sensor                     ambient temperature with a sensor"
+ 2  a target temperature received   ✓ disclosed  "target temperature ... received from
+    from a mobile device                          a mobile device over a wireless link"
+ 3  activating a heating element    ✓ disclosed  "when the measured temperature falls
+    when temp falls below target                  below the target ... activating a
+                                                  heating element"
+```
+
+A *novel* case shows the un-disclosed limitations and a "novel over the reference" verdict instead.
+
 ## Evals
 
 ```bash
@@ -117,7 +135,8 @@ echo "NEXT_PUBLIC_API_URL=http://localhost:8000" > .env.local
 npm run dev                           # open http://localhost:3000
 ```
 
-See [DEPLOY.md](./DEPLOY.md).
+See [DEPLOY.md](./DEPLOY.md) — the FastAPI backend on Railway (via the `Dockerfile`; needs
+`ANTHROPIC_API_KEY`) + the Next.js `web/` UI on Vercel, ~5 minutes.
 
 ## License
 
