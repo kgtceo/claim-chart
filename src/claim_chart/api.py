@@ -18,7 +18,7 @@ _env_origins = [o.strip() for o in os.getenv("CH_CORS_ORIGINS", "").split(",") i
 app.add_middleware(
     CORSMiddleware,
     allow_origins=_env_origins,
-    allow_origin_regex=r"https://claim-chart[a-z0-9-]*\.vercel\.app|http://(localhost|127\.0\.0\.1):\d+",
+    allow_origin_regex=r"https://claim-chart[a-z0-9-]*\.vercel\.app|https://claim-chart\.kareemghazal\.com|http://(localhost|127\.0\.0\.1):\d+",
     allow_methods=["*"],
     allow_headers=["*"],
 )
