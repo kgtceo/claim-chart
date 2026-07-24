@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { chart, getSamples } from "../lib/api";
+import { FALLBACK_SAMPLES } from "../lib/samples";
 import type { ChartResult, Sample } from "../lib/types";
 
 function sampleLabel(name: string): string {
@@ -12,7 +13,9 @@ function sampleLabel(name: string): string {
 export default function Home() {
   const [claim, setClaim] = useState("");
   const [reference, setReference] = useState("");
-  const [samples, setSamples] = useState<Sample[]>([]);
+  // Seeded with the baked-in samples so "Load sample" is tappable immediately,
+  // even while the backend is still cold-starting.
+  const [samples, setSamples] = useState<Sample[]>(FALLBACK_SAMPLES);
   const [result, setResult] = useState<ChartResult | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
