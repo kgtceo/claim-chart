@@ -29,8 +29,14 @@ def _norm(s: str) -> str:
 # --- claim segmentation -------------------------------------------------------------------------
 
 # Split points: semicolons, newlines, and clause connectors that typically separate limitations in
-# claim drafting ("wherein", "; and", ", and"). Kept deliberately simple and robust.
-_SPLIT_RE = re.compile(r";|\n|(?<=\s)wherein\s|(?<=,)\s+and\s|(?<=\s)and\s", re.IGNORECASE)
+# claim drafting ("wherein", "; and", ", and"). Deliberately NOT bare "and" — real claim language
+# uses "and" inside a single limitation constantly ("a processor and a memory"), and splitting on it
+# fractures the element the whole analysis rests on.
+_SPLIT_RE = re.compile(r";|\n|(?<=\s)wherein\s|(?<=,)\s+and\s", re.IGNORECASE)
+
+# A fragment that starts with a leftover connector ("; and generating…" → "and generating…") gets
+# the connector stripped so the limitation reads as the element/step itself.
+_LEADING_CONNECTOR_RE = re.compile(r"^(?:and|or)\s+", re.IGNORECASE)
 
 
 def segment_claim(claim: str) -> list[Limitation]:
@@ -50,6 +56,7 @@ def segment_claim(claim: str) -> list[Limitation]:
             body = body.split(":", 1)[1]
 
     parts = [p.strip(" \t\r\n,.;") for p in _SPLIT_RE.split(body)]
+    parts = [_LEADING_CONNECTOR_RE.sub("", p) for p in parts]
     parts = [p for p in parts if len(p) >= 3]  # drop empties / stray connector fragments
     if not parts:
         parts = [claim.strip()]

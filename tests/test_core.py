@@ -36,6 +36,48 @@ def test_segmentation_splits_limitations():
     assert [l.index for l in lims] == [1, 2, 3]
 
 
+def test_segmentation_does_not_split_on_bare_and():
+    """'and' inside a single limitation ('a processor and a memory') must NOT fracture it —
+    only semicolons / newlines / 'wherein' / ', and' separate limitations."""
+    claim = (
+        "An apparatus comprising: a processor and a memory coupled to the processor; "
+        "and a display that renders output from the processor and the memory."
+    )
+    lims = segment_claim(claim)
+    assert [l.text for l in lims] == [
+        "a processor and a memory coupled to the processor",
+        "a display that renders output from the processor and the memory",
+    ]
+
+
+def test_segmentation_real_patent_claim_us5960411():
+    """Claim 1 of US 5,960,411 (Amazon '1-Click', granted 1999, expired) — real granted claim
+    language must segment into its actual method steps."""
+    claim = (
+        "A method of placing an order for an item comprising: under control of a client system, "
+        "displaying information identifying the item; and in response to only a single action "
+        "being performed, sending a request to order the item along with an identifier of a "
+        "purchaser of the item to a server system; under control of a single-action ordering "
+        "component of the server system, receiving the request; retrieving additional information "
+        "previously stored for the purchaser identified by the identifier in the received request; "
+        "and generating an order to purchase the requested item for the purchaser identified by "
+        "the identifier in the received request using the retrieved additional information; and "
+        "fulfilling the generated order to complete purchase of the item whereby the item is "
+        "ordered without using a shopping cart ordering model."
+    )
+    lims = segment_claim(claim)
+    texts = [l.text for l in lims]
+    assert len(texts) == 6
+    assert texts[0].startswith("under control of a client system")
+    assert texts[1].startswith("in response to only a single action")
+    assert texts[2].startswith("under control of a single-action ordering component")
+    assert texts[3].startswith("retrieving additional information")
+    assert texts[4].startswith("generating an order to purchase")
+    assert texts[5].startswith("fulfilling the generated order")
+    # No fragment starts with a leftover connector, and none fractured on a bare "and".
+    assert not any(t.lower().startswith("and ") for t in texts)
+
+
 def test_grounded_disclosure_kept():
     reference = "The system stores data in an encrypted vault and derives a key from a passphrase, but never syncs."
     lims = _limits()

@@ -1,15 +1,27 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { chart, getSamples } from "../lib/api";
-import type { ChartResult } from "../lib/types";
+import type { ChartResult, Sample } from "../lib/types";
+
+function sampleLabel(name: string): string {
+  if (name.startsWith("real-patent-us5960411")) return "Amazon 1-Click — US 5,960,411";
+  return name.replace(/-/g, " ");
+}
 
 export default function Home() {
   const [claim, setClaim] = useState("");
   const [reference, setReference] = useState("");
+  const [samples, setSamples] = useState<Sample[]>([]);
   const [result, setResult] = useState<ChartResult | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    getSamples()
+      .then(setSamples)
+      .catch(() => { /* samples optional */ });
+  }, []);
 
   async function run() {
     if (!claim.trim() || !reference.trim()) return;
@@ -25,17 +37,10 @@ export default function Home() {
     }
   }
 
-  async function loadSample() {
-    try {
-      const samples = await getSamples();
-      if (samples.length === 0) return;
-      const s = samples[Math.floor(Math.random() * samples.length)];
-      setClaim(s.claim);
-      setReference(s.reference);
-      setResult(null);
-    } catch {
-      /* ignore */
-    }
+  function loadSample(s: Sample) {
+    setClaim(s.claim);
+    setReference(s.reference);
+    setResult(null);
   }
 
   const anticipated = result?.verdict.startsWith("anticipated");
@@ -77,10 +82,18 @@ export default function Home() {
         <button onClick={run} disabled={loading}>
           {loading ? "Charting…" : "Build claim chart"}
         </button>
-        <button className="ghost" onClick={loadSample} disabled={loading}>
-          Load sample
-        </button>
       </div>
+
+      {samples.length > 0 && (
+        <div className="examples">
+          {samples.map((s) => (
+            <span className="chip" key={s.name} onClick={() => loadSample(s)}>
+              {sampleLabel(s.name)}
+              {s.tag && <span className="tag">{s.tag}</span>}
+            </span>
+          ))}
+        </div>
+      )}
 
       {error && <div className="error">{error}</div>}
 

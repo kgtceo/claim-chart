@@ -22,5 +22,22 @@
     "planted_disclosed": [1, 2],
     "expected_verdict": "novel",
     "note": "Storage and key-derivation disclosed; cross-device synchronisation expressly absent (single-device, never transmitted). Tempts a false disclosure of limitation 3."
+  },
+  {
+    "name": "real-patent-us5960411-oneclick",
+    "claim": "A method of placing an order for an item comprising: under control of a client system, displaying information identifying the item; and in response to only a single action being performed, sending a request to order the item along with an identifier of a purchaser of the item to a server system; under control of a single-action ordering component of the server system, receiving the request; retrieving additional information previously stored for the purchaser identified by the identifier in the received request; and generating an order to purchase the requested item for the purchaser identified by the identifier in the received request using the retrieved additional information; and fulfilling the generated order to complete purchase of the item whereby the item is ordered without using a shopping cart ordering model.",
+    "reference": "The prior-art online shopping system operates as follows. Under control of a client system, the browser displays information identifying the item on a product page. To purchase, the shopper first adds the item to a shopping cart, then proceeds through a multi-step checkout with several confirmation pages. During checkout, the client sends a request to order the item along with an identifier of a purchaser of the item to a server system. The server system receives the request, and retrieves additional information previously stored for the purchaser, such as a shipping address and payment details, from the purchaser's account. The server then generates an order to purchase the requested item using the retrieved information, and the order is fulfilled once the shopper confirms the final checkout summary page.",
+    "planted_disclosed": [1, 4, 5],
+    "expected_verdict": "novel",
+    "note": "REAL granted claim: claim 1 of US 5,960,411 (Amazon '1-Click', 1999, expired) vs a synthetic conventional shopping-cart system. Three deliberate traps, one per single-action qualifier: the reference verbatim-discloses 'sending a request ... to a server system' but NOT 'in response to only a single action' (limitation 2); its server receives requests but has no 'single-action ordering component' (limitation 3); and it fulfils orders but WITH a cart, so 'without using a shopping cart ordering model' (limitation 6) is not disclosed. Tests that qualifiers defeat a tempting verbatim quote.",
+    "source": "US 5,960,411 claim 1 (granted 1999, expired); reference is synthetic"
+  },
+  {
+    "name": "anticipated-paraphrased-drivetrain",
+    "claim": "A bicycle transmission comprising: a pedal crank; a plurality of sprockets of different diameters; and a derailleur that moves a chain between the sprockets to change the gear ratio.",
+    "reference": "In the known velocipede drivetrain, the rider turns a pedal crank to drive the machine. The rear wheel carries a cassette of toothed wheels having differing diameters. A chain-shifting mechanism guides the chain from one toothed wheel to another so as to alter the drive ratio while riding.",
+    "planted_disclosed": [1, 2, 3],
+    "expected_verdict": "anticipated",
+    "note": "The reference discloses every limitation but in PARAPHRASED language (sprockets = 'toothed wheels', derailleur = 'chain-shifting mechanism'). Tests the opposite failure mode to the traps: disclosure must be judged on substance, while the quote must still be verbatim from the reference."
   }
 ]

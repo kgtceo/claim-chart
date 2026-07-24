@@ -15,9 +15,14 @@ CHART_SYSTEM = (
     "2. Do NOT paraphrase in the quote. Copy the words exactly as they appear in the reference.\n"
     "3. Anticipation is strict: every element must be found in this single reference. Do not import "
     "knowledge from outside the reference and do not reason about obviousness.\n"
-    "4. Return exactly one mapping per limitation, using the limitation text as the `limitation` "
+    "4. Qualifiers are part of the limitation. A limitation like 'in response to only a single "
+    "action' or 'without physical contact' is disclosed ONLY if the reference teaches the FULL "
+    "limitation INCLUDING the qualifier. A reference that teaches the same act done a different "
+    "way (e.g. after multiple actions, or with a cable) does NOT disclose it — partial disclosure "
+    "is not disclosure.\n"
+    "5. Return exactly one mapping per limitation, using the limitation text as the `limitation` "
     "field.\n"
-    "5. This is educational, not legal advice."
+    "6. This is educational, not legal advice."
 )
 
 

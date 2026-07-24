@@ -62,8 +62,5 @@ def is_grounded(result: ChartResult, reference: str) -> bool:
     return True
 
 
-def verdict_correct(result: ChartResult, planted: list[int]) -> bool:
-    """Verdict should be 'anticipated' iff every limitation is disclosed."""
-    all_disclosed = len(set(planted)) == len(result.limitations)
-    said_anticipated = result.verdict.startswith("anticipated")
-    return all_disclosed == said_anticipated
+# NOTE: verdict correctness is checked in run_evals.py against each case's declared
+# `expected_verdict`, cross-validated against the planted labels (dataset self-consistency).

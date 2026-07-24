@@ -24,4 +24,5 @@ export interface Sample {
   claim: string;
   reference: string;
   note: string;
+  tag: string;
 }

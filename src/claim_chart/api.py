@@ -38,7 +38,7 @@ def health() -> dict:
 def samples() -> dict:
     return {
         "samples": [
-            {"name": c.name, "claim": c.claim, "reference": c.reference, "note": c.note}
+            {"name": c.name, "claim": c.claim, "reference": c.reference, "note": c.note, "tag": c.tag}
             for c in SAMPLE_CASES
         ]
     }

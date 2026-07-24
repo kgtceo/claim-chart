@@ -1,0 +1,103 @@
+{
+  "run": {
+    "timestamp_utc": "2026-07-24T04:41:42+00:00",
+    "model": "claude-sonnet-4-6",
+    "judge_model": "claude-opus-4-8",
+    "dataset_size": 5
+  },
+  "metrics": {
+    "recall_avg": 1.0,
+    "precision_avg": 1.0,
+    "verdicts": "5/5",
+    "judge_overall_avg": 5.0,
+    "all_gates_passed": true
+  },
+  "failures": [],
+  "per_case": [
+    {
+      "name": "anticipated-thermostat",
+      "source": null,
+      "recall": 1.0,
+      "precision": 1.0,
+      "grounded": true,
+      "verdict": "anticipated",
+      "expected_verdict": "anticipated",
+      "verdict_correct": true,
+      "judge": {
+        "faithfulness": 5,
+        "completeness": 5,
+        "verdict_soundness": 5,
+        "overall": 5,
+        "comment": "All three limitations are genuinely taught by the single reference, and every quote appears verbatim (or nearly so) in the reference text with no over-reading. Limitation 1 (sensor/thermistor), limitation 2 (target temp from mobile device over wireless link \u2014 reference even matches \"wireless link such as Bluetooth\"), and limitation 3 (activate heating element when temp falls below target) are each squarely disclosed. Since this single reference discloses every claim limitation arranged as claimed, the \"anticipated\" verdict is correct. Chart is faithful, complete, and the verdict is sound."
+      }
+    },
+    {
+      "name": "novel-drone-charging",
+      "source": null,
+      "recall": 1.0,
+      "precision": 1.0,
+      "grounded": true,
+      "verdict": "novel over the reference (limitation(s) not disclosed: an inductive charging coil that recharges the battery from a ground station without physical contact)",
+      "expected_verdict": "novel",
+      "verdict_correct": true,
+      "judge": {
+        "faithfulness": 5,
+        "completeness": 5,
+        "verdict_soundness": 5,
+        "overall": 5,
+        "comment": "All three \"disclosed\" calls are genuinely taught by the reference, and the supporting quotes appear verbatim in the text (rotor assembly, rechargeable battery, downward-facing camera for landing). The chart correctly identifies the inductive charging coil / contactless recharging limitation as not disclosed \u2014 the reference expressly teaches recharging \"by plugging a cable into a wall adapter,\" which is the opposite (physical-contact) approach and provides no inductive/ground-station teaching. Because a single limitation is missing from this single reference, anticipation fails and the \"novel over the reference\" verdict is sound. No over-reading and no missed disclosures."
+      }
+    },
+    {
+      "name": "novel-password-manager-sync",
+      "source": null,
+      "recall": 1.0,
+      "precision": 1.0,
+      "grounded": true,
+      "verdict": "novel over the reference (limitation(s) not disclosed: synchronising the encrypted vault across a plurality of devices over a network)",
+      "expected_verdict": "novel",
+      "verdict_correct": true,
+      "judge": {
+        "faithfulness": 5,
+        "completeness": 5,
+        "verdict_soundness": 5,
+        "overall": 5,
+        "comment": "The two \"disclosed\" calls are well-supported by verbatim quotes that genuinely teach the limitations: the encrypted vault storing credentials and the key derived from a master passphrase. No over-reading. The chart correctly flags the synchronisation-across-devices limitation as not disclosed \u2014 indeed the reference affirmatively contradicts it (\"kept only on the single device and is never transmitted\"). Since anticipation requires every limitation in a single reference, the \"novel over the reference\" verdict is sound. A minor optional enhancement would be to note the express teaching-away language, but this does not affect correctness."
+      }
+    },
+    {
+      "name": "real-patent-us5960411-oneclick",
+      "source": "US 5,960,411 claim 1 (granted 1999, expired); reference is synthetic",
+      "recall": 1.0,
+      "precision": 1.0,
+      "grounded": true,
+      "verdict": "novel over the reference (limitation(s) not disclosed: in response to only a single action being performed, sending a request to order the item along with an identifier of a purchaser of the item to a server system; under control of a single-action ordering component of the server system, receiving the request; fulfilling the generated order to complete purchase of the item whereby the item is ordered without using a shopping cart ordering model)",
+      "expected_verdict": "novel",
+      "verdict_correct": true,
+      "judge": {
+        "faithfulness": 5,
+        "completeness": 5,
+        "verdict_soundness": 5,
+        "overall": 5,
+        "comment": "The chart is accurate and well-reasoned. FAITHFULNESS: The three \"disclosed\" calls are genuinely taught, and each quote appears verbatim in the reference (product page display, retrieval of stored purchaser info, order generation). No over-reading. COMPLETENESS: The genuinely-disclosed limitations are all caught. The NOT-disclosed calls are correct: the reference expressly uses a shopping cart + multi-step checkout (\"first adds the item to a shopping cart, then proceeds through a multi-step checkout\"), so the single-action limitation, the single-action ordering component, and the \"without using a shopping cart ordering model\" fulfillment limitation are all absent. The claim's fulfillment step is split \u2014 while the reference does disclose order fulfillment upon confirmation, the \"whereby the item is ordered without using a shopping cart ordering model\" clause is the disqualifying part, so marking the whole limitation NOT disclosed is appropriate here. VERDICT: Correct \u2014 anticipation requires EVERY limitation in a single reference; since the single-action and no-shopping-cart limitations are missing, the claim is novel over this reference. Minor nuance: one could note the fulfillment limitation's basic \"fulfilling the generated order\" portion is arguably disclosed, with only the whereby clause missing, but the net conclusion is unchanged."
+      }
+    },
+    {
+      "name": "anticipated-paraphrased-drivetrain",
+      "source": null,
+      "recall": 1.0,
+      "precision": 1.0,
+      "grounded": true,
+      "verdict": "anticipated",
+      "expected_verdict": "anticipated",
+      "verdict_correct": true,
+      "judge": {
+        "faithfulness": 5,
+        "completeness": 5,
+        "verdict_soundness": 5,
+        "overall": 5,
+        "comment": "Every limitation is mapped to a quote that genuinely appears in the reference, and each mapping is a fair reading rather than over-reading. \"Pedal crank\" is a verbatim match. \"Cassette of toothed wheels having differing diameters\" straightforwardly teaches a plurality of sprockets of different diameters. The \"chain-shifting mechanism [that] guides the chain from one toothed wheel to another so as to alter the drive ratio\" is a proper functional equivalent of a derailleur moving a chain between sprockets to change the gear ratio \u2014 the reference is describing the same structure/function, so reading it as a derailleur is sound (a rejection could formally note it as inherent/equivalent, but this is a reasonable claim-chart call). All three limitations are found in this single reference, and none are missed. Because every limitation is disclosed in one reference, the \"anticipated\" verdict is correct. Minor nit only: an examiner might phrase the derailleur mapping as \"chain-shifting mechanism (i.e., a derailleur)\" to flag the terminology bridge, but this does not undermine the analysis."
+      }
+    }
+  ]
+}

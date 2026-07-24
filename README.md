@@ -78,13 +78,31 @@ python evals/run_evals.py --judge     # also run the opus faithfulness judge
 - **Recall** — of the limitations the reference truly discloses, a solid share are marked disclosed.
 - **Precision** — no limitation that *isn't* disclosed is marked disclosed (**no false disclosure**).
 - **Grounding** — every "disclosed" quote appears verbatim in the reference.
-- **Verdict** — "anticipated" iff every limitation is disclosed.
+- **Verdict** — the produced verdict must match the case's declared `expected_verdict`, and that
+  declaration is itself cross-checked against the planted labels — a mislabelled dataset fails
+  loudly instead of silently passing.
 - **Judge** — opus scores chart faithfulness (over-reading), completeness, and verdict soundness.
 
-**Latest run (claude-sonnet-4-6, opus judge):** all gates pass — on the **3 planted claim + prior-art
-cases** (one anticipated, two novel-over-the-reference, each with a known set of disclosed vs
-not-disclosed limitations), disclosure recall **1.00** and precision **1.00** (no false disclosure),
-every "disclosed" quote is verbatim-grounded in the reference, and all 3 novelty verdicts are correct.
+Every run writes a **reproducible artifact** to [`evals/results/latest.json`](evals/results/latest.json)
+— per-case outcomes, metrics, the models used, and a timestamp. The numbers below come from that file.
+
+**Latest run (claude-sonnet-4-6, opus judge):** all gates pass on the **5 labelled claim + prior-art
+cases** — disclosure recall **1.00** and precision **1.00** (no false disclosure), every "disclosed"
+quote verbatim-grounded, all **5/5** verdicts correct, and the opus judge scores **5.0/5** overall.
+
+Two of the five cases are built to break lazy charting:
+
+- **A real granted claim** — claim 1 of **US 5,960,411 (Amazon "1-Click", 1999, expired)** charted
+  against a synthetic conventional shopping-cart system. Three traps, one per single-action
+  qualifier: the reference verbatim-contains "sending a request … to a server system" — but *not*
+  "in response to **only a single action**"; its server receives requests — but has no
+  "**single-action ordering component**"; it fulfils orders — but **with** a cart. The chart must
+  resist all three tempting quotes and call the claim novel (which is roughly why the patent was
+  granted).
+- **A paraphrased anticipation** — every limitation disclosed, but in different words (sprockets =
+  "toothed wheels", derailleur = "chain-shifting mechanism"). The opposite failure mode: disclosure
+  judged on substance, while the quote must still be verbatim from the reference.
+
 It's a small, hand-labelled set — enough to gate the grounding + verdict logic, not a benchmark;
 add your own — each case is one JSON object in `evals/dataset/cases.json`:
 
@@ -93,20 +111,22 @@ add your own — each case is one JSON object in `evals/dataset/cases.json`:
   "claim": "A device comprising A, B and C.",
   "reference": "...prior-art text...",
   "planted_disclosed": [1, 2],
-  "expected_verdict": "novel over the reference" }
+  "expected_verdict": "novel" }
 ```
 
 `planted_disclosed` lists which limitations the reference actually discloses (by index — mirror an
-existing case); `expected_verdict` is `"anticipated"` or `"novel over the reference"`.
+existing case); `expected_verdict` is `"anticipated"` or `"novel"`.
 
 ## Limitations (what it does NOT do)
 
 - **Single-reference anticipation only** — it charts a claim against *one* reference (a §102-style
   anticipation view). It does **not** assess obviousness (§103) over a combination of references,
   enablement, or overall patentability.
-- **The LLM segments and maps** the limitations; the deterministic part is the grounding filter
-  (a "disclosed" quote must appear verbatim in the reference) and the verdict. Unusual claim phrasing
-  can be segmented imperfectly — treat the chart as a **first-pass draft for a human to confirm**.
+- **Segmentation is deterministic** (semicolons / newlines / "wherein" / ", and" — deliberately
+  *not* bare "and", which appears inside single limitations constantly: "a processor and a
+  memory"); the LLM only does the disclosed/quote mapping, and the deterministic grounding filter
+  + verdict own the outcome. Unusual claim phrasing can still segment imperfectly — treat the
+  chart as a **first-pass draft for a human to confirm**.
 - Best on **synthetic or public** patent text; it is not a substitute for a professional prior-art
   search or an attorney's invalidity/FTO analysis.
 
