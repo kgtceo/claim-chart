@@ -11,6 +11,8 @@ marked **not disclosed**, plus a novelty verdict. (First run ~10–20s.)
 > for a professional prior-art search. Use synthetic or public patent text only. Consult a
 > qualified patent attorney for anything that matters.
 
+![claim-chart: a patent claim's limitations mapped to supporting prior-art text — each disclosed with a verbatim quote or marked not disclosed — plus a novelty verdict](docs/images/screenshot.png)
+
 ![claim-chart — architecture and eval harness](docs/images/architecture.png)
 
 ## What it does
