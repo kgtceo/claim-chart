@@ -37,7 +37,10 @@ grounding are all measured, not asserted.
 
 ## Quickstart
 
+**Requirements:** Python ≥3.10 (backend) · Node ≥18 (the `web/` UI). The offline tests need no API key.
+
 ```bash
+python -m venv .venv && source .venv/bin/activate
 pip install -e .
 cp .env.example .env   # add ANTHROPIC_API_KEY
 
