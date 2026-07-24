@@ -2,6 +2,8 @@
 
 ### ▶ Live demo: **[claim-chart.kareemghazal.com](https://claim-chart.kareemghazal.com)**
 
+[![CI](https://github.com/kgtceo/claim-chart/actions/workflows/ci.yml/badge.svg)](https://github.com/kgtceo/claim-chart/actions/workflows/ci.yml)
+
 Paste an independent patent **claim** and a piece of **prior art** (or "Load sample") and get a
 **claim chart**: each claim limitation mapped to a verbatim quote in the reference (disclosed) or
 marked **not disclosed**, plus a novelty verdict. (First run ~10–20s.)
@@ -29,9 +31,9 @@ discloses **every** limitation of that claim. `claim-chart` automates the bookke
 4. Verdict: **anticipated** if every limitation is disclosed, else **novel over the reference**
    (with the specific limitations that aren't disclosed).
 
-Built the same way as the other reviewers in this set — *measure, don't vibe*: it's gated by a
-**planted-case eval set** where each reference discloses a known subset of limitations, so recall,
-precision (no false disclosure) and grounding are all measured, not asserted.
+Built around one idea — *measure, don't vibe*: it's gated by a **planted-case eval set** where each
+reference discloses a known subset of limitations, so recall, precision (no false disclosure) and
+grounding are all measured, not asserted.
 
 ## Quickstart
 
@@ -63,7 +65,18 @@ cases** (one anticipated, two novel-over-the-reference, each with a known set of
 not-disclosed limitations), disclosure recall **1.00** and precision **1.00** (no false disclosure),
 every "disclosed" quote is verbatim-grounded in the reference, and all 3 novelty verdicts are correct.
 It's a small, hand-labelled set — enough to gate the grounding + verdict logic, not a benchmark;
-add your own cases to `evals/dataset/cases.json` to test on your domain.
+add your own — each case is one JSON object in `evals/dataset/cases.json`:
+
+```json
+{ "name": "my-case",
+  "claim": "A device comprising A, B and C.",
+  "reference": "...prior-art text...",
+  "planted_disclosed": [1, 2],
+  "expected_verdict": "novel over the reference" }
+```
+
+`planted_disclosed` lists which limitations the reference actually discloses (by index — mirror an
+existing case); `expected_verdict` is `"anticipated"` or `"novel over the reference"`.
 
 ## Limitations (what it does NOT do)
 
