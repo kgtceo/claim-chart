@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { chart, getSamples } from "../lib/api";
 import type { ChartResult, Sample } from "../lib/types";
 
@@ -43,6 +43,14 @@ export default function Home() {
     setResult(null);
   }
 
+  const exampleIdx = useRef(0);
+
+  function loadExample() {
+    if (samples.length === 0) return;
+    loadSample(samples[exampleIdx.current % samples.length]);
+    exampleIdx.current += 1;
+  }
+
   const anticipated = result?.verdict.startsWith("anticipated");
 
   return (
@@ -81,6 +89,9 @@ export default function Home() {
       <div className="actions">
         <button onClick={run} disabled={loading}>
           {loading ? "Charting…" : "Build claim chart"}
+        </button>
+        <button className="ghost" onClick={loadExample} disabled={loading || samples.length === 0}>
+          Load sample
         </button>
       </div>
 
